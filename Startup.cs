@@ -47,6 +47,8 @@ namespace CriticalNotify
                 options.UseSqlServer(connRoot);
             });
             services.AddScoped<I病患檔Service, 病患檔Service>();
+            services.AddScoped<I報告台結果檔Service, 報告台結果檔Service>();
+
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //* get IP */
