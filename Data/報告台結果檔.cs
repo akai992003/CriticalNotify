@@ -54,7 +54,6 @@ namespace CriticalNotify.Data
                                    報告師代號 = p.報告師代號,
                                    流程旗標 = p.流程旗標,
                                    申請流水號 = p.申請流水號
-
                                }).FirstOrDefaultAsync();
                                if (q == null)
                                {

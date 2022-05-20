@@ -11,19 +11,39 @@ public class WSController : ControllerBase
     private readonly ILogger<HomeController> _logger;
     private readonly I病患檔Service I病患檔;
     private readonly I報告台結果檔Service I報告台結果檔;
+    private readonly I危急值通報檔Service I危急值通報檔;
 
-    public WSController(ILogger<HomeController> logger, I病患檔Service _病患檔, I報告台結果檔Service _報告台結果檔)
+    public WSController(ILogger<HomeController> logger, I病患檔Service _病患檔, I報告台結果檔Service _報告台結果檔, I危急值通報檔Service _危急值通報檔)
     {
         _logger = logger;
         I病患檔 = _病患檔;
         I報告台結果檔 = _報告台結果檔;
+        I危急值通報檔 =_危急值通報檔;
 
     }
     //給方鼎呼叫的ws 需要他們從檢驗報到台、報告登錄台、報告報到台傳入參數
     [HttpGet("criti_report")]
-    public async Task<IActionResult> criti_report1(string type, int counter)
+    public async Task<IActionResult> criti_report1(string type, int counter, string empno)
     {
-        var q = await this.I報告台結果檔.Get報告台結果檔(type,counter);
+        var q = await this.I報告台結果檔.Get報告台結果檔(type, counter);
+        var d1 = new 危急值通報檔();
+        d1.結果檔_counter = q.counter;
+        d1.病患檔_counter = q.病患檔_counter;
+        d1.檢查類別 = type;
+        d1.來源代碼 = q.來源代碼;
+        d1.報告台代碼 = q.報告台代碼.ToString();
+        d1.流水單號 = q.申請流水號;
+        d1.流程旗標 = "通";
+        d1.通報日期 = DateTime.Now.ToString("yyyyMMdd");
+        d1.通報時間 = DateTime.Now.ToString("HHmm");
+        d1.回覆日期 = "";
+        d1.回覆時間 = "";
+        d1.回覆內容 = "";
+        d1.通報人 = empno;
+        d1.回覆醫師 = "";
+
+        await this.I危急值通報檔.New危急值通報檔(d1);
+        
         return Ok(new
         {
             counter = q.counter,
@@ -42,12 +62,13 @@ public class WSController : ControllerBase
             流程旗標 = q.流程旗標,
             申請流水號 = q.申請流水號
         });
+
     }
 
-    [HttpGet("test3")]
-    public async Task<IActionResult> mytest3(string ID)
+    [HttpGet("msg_call")]
+    public async Task<IActionResult> msg_call(int counter)
     {
-        var q = await this.I病患檔.Get病患檔ByID(ID);
+        var q = await this.I危急值通報檔.Get危急值通報檔ByCounter(counter);
         return Ok(new
         {
             data = q

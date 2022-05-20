@@ -48,7 +48,7 @@ namespace CriticalNotify
             });
             services.AddScoped<I病患檔Service, 病患檔Service>();
             services.AddScoped<I報告台結果檔Service, 報告台結果檔Service>();
-
+            services.AddScoped<I危急值通報檔Service, 危急值通報檔Service>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //* get IP */
