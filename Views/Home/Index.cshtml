@@ -1,8 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Country Hospital";
 }
+@model  CriticalNotify.Data.危急值通報檔;
 
 <div class="text-center">
-    <h1 class="display-4">Welcome akai</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-8">危急值通報回應</h1>
+    <hr>
+    <h4 class="text-left">
+    <p>病患病歷號:</p> <br>
+    <p>病患姓名:@Model.病患檔_counter</p> <br>
+    <p>檢查項目:@Model.流水單號</p><br>
+    <p>檢查結果:</p> <br>
+    </h4>
 </div>
+ 

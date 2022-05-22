@@ -61,18 +61,22 @@ public class WSController : ControllerBase
             報告師代號 = q.報告師代號,
             流程旗標 = q.流程旗標,
             申請流水號 = q.申請流水號
+  
         });
 
     }
 
     [HttpGet("msg_call")]
-    public async Task<IActionResult> msg_call(int counter)
+    public async Task<IActionResult> msg_call1(int counter)
     {
         var q = await this.I危急值通報檔.Get危急值通報檔ByCounter(counter);
         return Ok(new
         {
             data = q
         });
+
+
+        
     }
 
 
