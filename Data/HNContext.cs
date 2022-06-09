@@ -27,6 +27,7 @@ namespace CriticalNotify.Data
         public DbSet<病患檔> 病患檔 { get; set; }
         public DbSet<報告台結果檔> 報告台結果檔 { get; set; }
         public DbSet<危急值通報檔> hn危急值通報檔 { get; set; }
+         public DbSet<繳費檔> 繳費檔 { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

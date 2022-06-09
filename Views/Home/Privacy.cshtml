@@ -1,6 +1,58 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model IEnumerable<CriticalNotify.Data.dto拆帳字串>;
 
-<p>Use this page to detail your site's privacy policy.</p>
+<table class="table table-striped table-bordered" >
+    <thead> 
+        <tr>
+            <td>診察費</td>
+            <td>病房費</td>
+            <td>管灌膳食費</td>
+            <td>檢查費</td>
+            <td>放射線診療費</td>
+            <td>治療處置費</td>
+            <td>手術費</td>
+            <td>復健治療費</td>
+            <td>血液血漿費</td>
+            <td>血液透析費</td>
+            <td>麻醉費</td>
+            <td>特殊材料費</td>
+            <td>藥費</td>
+            <td>藥事服務費</td>
+            <td>精神科治療費</td>
+            <td>注射技術費</td>
+            <td>嬰兒費</td>
+            <td>自定</td>
+            <td>檢驗費</td>
+            <td>工本費</td>
+            <td>手續費</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model) {
+            <tr>
+                <td>@p.診察費</td>
+                <td>@p.病房費</td>
+                <td>@p.管灌膳食費</td>
+                <td>@p.檢查費</td>
+                <td>@p.放射線診療費</td>
+                <td>@p.治療處置費</td>
+                <td>@p.手術費</td>
+                <td>@p.復健治療費</td>
+                <td>@p.血液血漿費</td>
+                <td>@p.血液透析費</td>
+                <td>@p.麻醉費</td>
+                <td>@p.特殊材料費</td>
+                <td>@p.藥費</td>
+                <td>@p.藥事服務費</td>
+                <td>@p.精神科治療費</td>
+                <td>@p.注射技術費</td>
+                <td>@p.嬰兒費</td>
+                <td>@p.自定</td>
+                <td>@p.檢驗費</td>
+                <td>@p.工本費</td>
+                <td>@p.手續費</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
