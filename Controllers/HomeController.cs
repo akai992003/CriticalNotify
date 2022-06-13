@@ -204,6 +204,12 @@ public class HomeController : Controller
         var total檢驗費體一 = dl2.Sum(d => d._04檢驗費);
         ViewBag.total檢驗費 = total檢驗費;
         ViewBag.total檢驗費體一 = total檢驗費體一;
+
+        var total檢驗費_part2 = await this.I繳費.取得檢驗費("1110526");
+        var total檢驗費體一_part2 = await this.I繳費.取得檢驗費("1110526","體一");
+        ViewBag.total檢驗費_part2 = total檢驗費_part2;
+        ViewBag.total檢驗費體一_part2 = total檢驗費體一_part2;
+
         return View(dl);
     }
 

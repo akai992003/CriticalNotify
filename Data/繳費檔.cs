@@ -1,5 +1,7 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CriticalNotify.Data;
 
@@ -8,12 +10,13 @@ public class 繳費檔
     [Key]
     public Int32 counter { get; set; }
     public Int32 病患檔_counter { get; set; }
-    public string 拆帳字串 { get; set; }
+    public string? 拆帳字串 { get; set; }
     public string 日期 { get; set; }
     public string 經手人代號 { get; set; }
     public string 註銷否 { get; set; }
     public string 醫師代號 { get; set; }
     public string 付款方式代碼 { get; set; }
+    public Single 實收檢驗費 { get; set; }
 }
 
 public class dto拆帳字串
@@ -93,6 +96,9 @@ public interface I繳費Service
 {
     Task<List<string>> 取得拆帳字串(string 日期);
     Task<List<string>> 取得拆帳字串(string 日期, string 費用單位);
+
+    Task<double> 取得檢驗費(string 日期);
+    Task<double> 取得檢驗費(string 日期, string 費用單位);
 }
 
 public class 繳費Service : I繳費Service
@@ -106,7 +112,7 @@ public class 繳費Service : I繳費Service
                        where
                        //p.counter == 4923751
                        p.拆帳字串 != null && p.拆帳字串 != "" && p.付款方式代碼 != "1"
-                       && p.日期 == 日期 && 
+                       && p.日期 == 日期 &&
                        (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364")
                        || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432"))
                        && p.註銷否 == "N"
@@ -128,6 +134,50 @@ public class 繳費Service : I繳費Service
                        // A11784=魏素華 ; A12240=袁小媛 ; A12364=蕭蕙華 ; A12551=張蘊禮 ; A12433=謝鴻豪 ; A0681=卓正玲 ; A12432=劉家蓉
                        select p.拆帳字串).ToListAsync();
         return q;
+
+    }
+
+    public async Task<double> 取得檢驗費(string 日期)
+    {
+        using var context = new HNContext();
+        var q = await (from p in context.繳費檔
+                       where p.日期 == 日期
+
+                       && p.付款方式代碼 != "1"
+                       && (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364")
+                       || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432"))
+                       && p.註銷否 == "N"
+                        && p.拆帳字串 == null
+                       //    && p.counter == 4921007
+                       select p.實收檢驗費).ToListAsync();
+        
+        if (q.FirstOrDefault() == null)
+        {
+            return 0;
+        }
+        return q.Sum();
+
+    }
+
+    public async Task<double> 取得檢驗費(string 日期, string 費用單位)
+    {
+        using var context = new HNContext();
+        var q = await (from p in context.繳費檔
+                       where
+                       //p.counter == 4923751
+                       p.日期 == 日期
+                       && p.付款方式代碼 != "1"
+                       && (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364")
+                       || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432"))
+                       && p.註銷否 == "N" && (p.醫師代號.Contains("ZZ1") || p.醫師代號.Contains("360"))
+                       // A11784=魏素華 ; A12240=袁小媛 ; A12364=蕭蕙華 ; A12551=張蘊禮 ; A12433=謝鴻豪 ; A0681=卓正玲 ; A12432=劉家蓉
+                       && p.拆帳字串 == null
+                       select p.實收檢驗費).ToListAsync();
+        if (q.FirstOrDefault() == null)
+        {
+            return 0;
+        }
+        return q.Sum();
 
     }
 
