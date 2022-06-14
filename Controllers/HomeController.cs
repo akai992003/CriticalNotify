@@ -26,11 +26,12 @@ public class HomeController : Controller
         return View(q);
 
     }
-
+    
+    [HttpPost("~/CheckOne")]
     public async Task<IActionResult> Privacy()
     {
-        var q = await I繳費.取得拆帳字串("1110526");
-        var q2 = await I繳費.取得拆帳字串("1110526","體一");
+        var q = await I繳費.取得拆帳字串("1110613");
+        var q2 = await I繳費.取得拆帳字串("1110613", "體一");
         var dl = new List<dto拆帳字串>();
         var dl2 = new List<dto拆帳字串>();
         var mo = 0;
@@ -205,13 +206,22 @@ public class HomeController : Controller
         ViewBag.total檢驗費 = total檢驗費;
         ViewBag.total檢驗費體一 = total檢驗費體一;
 
-        var total檢驗費_part2 = await this.I繳費.取得檢驗費("1110526");
-        var total檢驗費體一_part2 = await this.I繳費.取得檢驗費("1110526","體一");
+        var total檢驗費_part2 = await this.I繳費.取得檢驗費("1110613");
+        var total檢驗費體一_part2 = await this.I繳費.取得檢驗費("1110613", "體一");
+        var 院內檢驗費 = await this.I繳費.取得院內檢驗費("1110613");
+
         ViewBag.total檢驗費_part2 = total檢驗費_part2;
         ViewBag.total檢驗費體一_part2 = total檢驗費體一_part2;
+        ViewBag.院內檢驗費 = 院內檢驗費;
 
+        var total = total檢驗費 + total檢驗費_part2;
+        ViewBag.total = total;
+        var 檢驗科檢驗費 = total - (total檢驗費體一 + total檢驗費體一_part2 + 院內檢驗費);
+        ViewBag.檢驗科檢驗費 = 檢驗科檢驗費;
         return View(dl);
     }
+
+    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

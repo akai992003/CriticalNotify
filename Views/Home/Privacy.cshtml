@@ -2,11 +2,12 @@
 
 <table class="table table-striped table-bordered">
     <thead>
-        <h4>total檢驗費 : @ViewBag.total檢驗費</h4>
-        <h4>total檢驗費(體一) : @ViewBag.total檢驗費體一</h4>
-
-        <h4>total檢驗費_part2 : @ViewBag.total檢驗費_part2</h4>
-        <h4>total檢驗費體一_part2(體一) : @ViewBag.total檢驗費體一_part2</h4>
+        <h4>total檢驗費 : @ViewBag.total</h4>
+        <h4>檢驗費(體一) : @ViewBag.total檢驗費體一</h4>
+        <h4>檢驗費(院內) : @ViewBag.院內檢驗費</h4>
+        <h4>檢驗費(檢驗科) : @ViewBag.檢驗科檢驗費</h4>
+        @* <h4>total檢驗費_part2 : @ViewBag.total檢驗費_part2</h4>
+            <h4>total檢驗費體一_part2(體一) : @ViewBag.total檢驗費體一_part2</h4> *@
         <tr>
             <td>_01病房費</td>
             <td>_02膳食費</td>
@@ -156,3 +157,15 @@
     </tbody>
 
 </table>
+
+<script type='text/javascript'>
+
+    const pa = {
+        "date": $('#date').val(),
+        
+    }
+
+    const data1 = JSON.stringify(pa);
+    const urlx = '@ViewBag.uRI' + 'CheckOne';
+
+</script>
