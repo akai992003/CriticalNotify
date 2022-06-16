@@ -26,17 +26,25 @@ public class HomeController : Controller
         return View(q);
 
     }
-    
-    [HttpPost("~/CheckOne")]
-    public async Task<IActionResult> Privacy()
+
+    [HttpGet]
+
+    public async Task<IActionResult> Privacy(string rtn日期)
     {
-        var q = await I繳費.取得拆帳字串("1110613");
-        var q2 = await I繳費.取得拆帳字串("1110613", "體一");
+        if (rtn日期 == "" || rtn日期 == null)
+        {
+            rtn日期 = "1110613";
+        }
+        var q = await I繳費.取得拆帳字串(rtn日期);
+        var q2 = await I繳費.取得拆帳字串(rtn日期, "體一");
         var dl = new List<dto拆帳字串>();
         var dl2 = new List<dto拆帳字串>();
         var mo = 0;
-        foreach (var p in q)
+        
+        foreach (var pa in q)
         {
+            var p = pa.拆帳字串;
+            var u = pa.姓名;
             if (p != "" || p != null)
             {
                 var ps = p.Split(";");
@@ -45,7 +53,7 @@ public class HomeController : Controller
 
                 // }
                 var dto = new dto拆帳字串();
-
+                dto.病患姓名 = u;
                 dto._01病房費 = double.Parse(ps[2]);
                 dto._02膳食費 = double.Parse(ps[3]);
                 dto._03藥品費 = double.Parse(ps[4]);
@@ -118,8 +126,9 @@ public class HomeController : Controller
             }
 
         }
-        foreach (var p in q2)
+        foreach (var pa in q2)
         {
+            var p = pa.拆帳字串;
             if (p != "" || p != null)
             {
                 var ps = p.Split(";");
@@ -206,9 +215,9 @@ public class HomeController : Controller
         ViewBag.total檢驗費 = total檢驗費;
         ViewBag.total檢驗費體一 = total檢驗費體一;
 
-        var total檢驗費_part2 = await this.I繳費.取得檢驗費("1110613");
-        var total檢驗費體一_part2 = await this.I繳費.取得檢驗費("1110613", "體一");
-        var 院內檢驗費 = await this.I繳費.取得院內檢驗費("1110613");
+        var total檢驗費_part2 = await this.I繳費.取得檢驗費(rtn日期);
+        var total檢驗費體一_part2 = await this.I繳費.取得檢驗費(rtn日期, "體一");
+        var 院內檢驗費 = await this.I繳費.取得院內檢驗費(rtn日期);
 
         ViewBag.total檢驗費_part2 = total檢驗費_part2;
         ViewBag.total檢驗費體一_part2 = total檢驗費體一_part2;
@@ -218,10 +227,23 @@ public class HomeController : Controller
         ViewBag.total = total;
         var 檢驗科檢驗費 = total - (total檢驗費體一 + total檢驗費體一_part2 + 院內檢驗費);
         ViewBag.檢驗科檢驗費 = 檢驗科檢驗費;
-        return View(dl);
+
+        var r1 = new dto拆帳字串2();
+        r1.dto日期 = rtn日期;
+        r1.dto = dl;
+        return View(r1);
     }
 
-    
+
+
+    [HttpPost]
+
+    public async Task<IActionResult> Privacy(dto拆帳字串2 dto1)
+    {
+
+        return RedirectToAction("Privacy", "Home", new { rtn日期 = dto1.dto日期 });
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
