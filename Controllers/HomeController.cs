@@ -29,18 +29,30 @@ public class HomeController : Controller
 
     [HttpGet]
 
+
+
+// Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-TW");
+// Thread.CurrentThread.CurrentCulture.DateTimeFormat.Calendar = new TaiwanCalendar();
+// 當使用DateTime.Now.ToString()時，得到的就是民國年日期，而且是整個系統範圍皆適用。
+// 若需要用到台灣陰陽曆(農民曆)處理，也可使用TaiwanLunisolarCalendar類別來做轉換，使用方式相同。
+//如不想用下列方式取得民國日期，也可以在程式一開始執行時用上述方式指定執行序的文化與曆法
+
     public async Task<IActionResult> Privacy(string rtn日期)
     {
+        System.Globalization.TaiwanCalendar tc = new System.Globalization.TaiwanCalendar();
+        DateTime d =  DateTime.Now.AddDays(-1);
+        
+        string chineseDate = string.Format("{0}{1}{2}",tc.GetYear(d),tc.GetMonth(d).ToString().PadLeft(2,'0'),tc.GetDayOfMonth(d).ToString().PadLeft(2,'0'));
         if (rtn日期 == "" || rtn日期 == null)
         {
-            rtn日期 = "1110613";
+            rtn日期 = chineseDate;
         }
         var q = await I繳費.取得拆帳字串(rtn日期);
-        var q2 = await I繳費.取得拆帳字串(rtn日期, "體一");
+        var q2 = await I繳費.取得拆帳字串_體一(rtn日期, "體一");
         var dl = new List<dto拆帳字串>();
         var dl2 = new List<dto拆帳字串>();
         var mo = 0;
-        
+
         foreach (var pa in q)
         {
             var p = pa.拆帳字串;
@@ -53,6 +65,7 @@ public class HomeController : Controller
 
                 // }
                 var dto = new dto拆帳字串();
+
                 dto.病患姓名 = u;
                 dto._01病房費 = double.Parse(ps[2]);
                 dto._02膳食費 = double.Parse(ps[3]);
@@ -213,24 +226,30 @@ public class HomeController : Controller
         var total檢驗費 = dl.Sum(c => c._04檢驗費);
         var total檢驗費體一 = dl2.Sum(d => d._04檢驗費);
         ViewBag.total檢驗費 = total檢驗費;
-        ViewBag.total檢驗費體一 = total檢驗費體一;
+        ViewBag.total檢驗費體一 = total檢驗費體一.ToString("N0");
 
-        var total檢驗費_part2 = await this.I繳費.取得檢驗費(rtn日期);
-        var total檢驗費體一_part2 = await this.I繳費.取得檢驗費(rtn日期, "體一");
-        var 院內檢驗費 = await this.I繳費.取得院內檢驗費(rtn日期);
-
+        var total檢驗費_part2 = await this.I繳費.取得檢驗費(rtn日期); //for 沒有拆帳字串的
+        var total檢驗費體一_part2 = await this.I繳費.取得檢驗費(rtn日期, "體一"); //for 沒有拆帳字串的
         ViewBag.total檢驗費_part2 = total檢驗費_part2;
         ViewBag.total檢驗費體一_part2 = total檢驗費體一_part2;
-        ViewBag.院內檢驗費 = 院內檢驗費;
+
+        var 院內檢驗費 = await this.I繳費.取得院內檢驗費(rtn日期);
+        ViewBag.院內檢驗費 = 院內檢驗費.ToString("N0");
 
         var total = total檢驗費 + total檢驗費_part2;
-        ViewBag.total = total;
-        var 檢驗科檢驗費 = total - (total檢驗費體一 + total檢驗費體一_part2 + 院內檢驗費);
-        ViewBag.檢驗科檢驗費 = 檢驗科檢驗費;
+        ViewBag.total = total.ToString("N0");
 
+        var 檢驗科檢驗費 = total - (total檢驗費體一 + total檢驗費體一_part2 + 院內檢驗費);
+        ViewBag.檢驗科檢驗費 = 檢驗科檢驗費.ToString("N0");
+
+        var q5 = await I繳費.取得檢驗費List(rtn日期);
+        var q6 = await I繳費.取得檢驗費List_體一(rtn日期,"體一");
+        ViewBag.q5 = q5;
+        ViewBag.q6 = q6;
+        var r1_1 = dl.Where(c => c._04檢驗費 != 0).ToList();
         var r1 = new dto拆帳字串2();
         r1.dto日期 = rtn日期;
-        r1.dto = dl;
+        r1.dto = r1_1;
         return View(r1);
     }
 

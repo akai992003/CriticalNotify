@@ -1,164 +1,202 @@
 ﻿@* @model IEnumerable<CriticalNotify.Data.dto拆帳字串2>; *@
 @model CriticalNotify.Data.dto拆帳字串2;
 <form asp-controller="Home" asp-action="Privacy" method="post">
-    <input type="text" name="dto日期" id="dto日期" value="@Model.dto日期"/>
-    <input type="submit" value="execute"/>
+    <input type="text" name="dto日期" id="dto日期" value="@Model.dto日期" />
+    <input type="submit" value="execute" />
 
 </form>
+
+<table>
+    <tr>
+        <td><h4>total檢驗費 : @ViewBag.total 元</h4></td>
+        <td><h4>檢驗費(體一) : @ViewBag.total檢驗費體一 元</h4></td>
+        <td><h4>檢驗費(院內) : @ViewBag.院內檢驗費 元</h4></td>
+        <td><h4>檢驗費(檢驗科) : @ViewBag.檢驗科檢驗費 元</h4></td>
+        </tr>
+</table>
 <table class="table table-striped table-bordered">
     <thead>
-        <h4>total檢驗費 : @ViewBag.total</h4>
-        <h4>檢驗費(體一) : @ViewBag.total體一檢驗費</h4>
-        <h4>檢驗費(院內) : @ViewBag.院內檢驗費</h4>
-        <h4>檢驗費(檢驗科) : @ViewBag.檢驗科檢驗費</h4>
-        @* <h4>total檢驗費_part2 : @ViewBag.total檢驗費_part2</h4>
-            <h4>total檢驗費體一_part2(體一) : @ViewBag.total檢驗費體一_part2</h4> *@
+       
+        
+
+
         <tr>
+            <td>#</td>
+            <td>資料來源</td>
             <td>病患姓名</td>
-            <td>_01病房費</td>
-            <td>_02膳食費</td>
-            <td>_03藥品費</td>
+            @* <td>_01病房費</td>
+                <td>_02膳食費</td>
+                <td>_03藥品費</td> *@
             <td>_04檢驗費</td>
-            <td>_05心電圖費</td>
-            <td>_06X光費</td>
-            <td>_07X光材料費</td>
-            <td>_08醫療衛材費</td>
-            <td>_09治療費</td>
-            <td>_10手術房費</td>
-            <td>_11麻醉藥品費</td>
-            <td>_12助理醫師費</td>
-            <td>_13護理費</td>
-            <td>_14洗腎費</td>
-            <td>_15證明書費</td>
-            <td>_16復健治療費</td>
-            <td>_17育嬰費</td>
-            <td>_18斷層攝影費</td>
-            <td>_19本院助手費</td>
-            <td>_20核子檢驗費</td>
-            <td>_21切片檢查費</td>
-            <td>_22尿動力測驗</td>
-            <td>_23電話費</td>
-            <td>_24手續費</td>
-            <td>_25一般材料費</td>
-            <td>_26病歷摘要</td>
-            <td>_27檢驗材料費</td>
-            <td>_28手術材料費</td>
-            <td>_29 </td>
-            <td>_30掛號費</td>
-            <td>_31診察費</td>
-            <td>_32門診會診費</td>
-            <td>_33住院會診費</td>
-            <td>_34手術費</td>
-            <td>_35麻醉費</td>
-            <td>_36助手費</td>
-            <td>_37加護病房費</td>
-            <td>_38眼科技術費</td>
-            <td>_39特別護士費</td>
-            <td>_40特別材料費</td>
-            <td>_41技術治療費</td>
-            <td>_42血片判讀費</td>
-            <td>_43健保門診自付款</td>
-            <td>_44健保住診自付款</td>
-            <td>_45藥事服務費</td>
-            <td>_46初診工本費</td>
-            <td>_47影印費</td>
-            <td>_48衛教費</td>
-            <td>_49指定醫師費</td>
-            <td>_50醫療諮詢費</td>
-            <td>_51輔具費</td>
-            <td>_52檢查費</td>
-            <td>_53精神科鑑定費</td>
-            <td>_54實習費</td>
-            <td>_55醫事服務費</td>
-            <td>_56醫美技術治療費</td>
-            <td>_57營養配方</td>
-            <td>_58處置費</td>
-            <td>_59</td>
-            <td>_60健康檢查</td>
-            <td>_61影印費</td>
-            <td>_62病情諮詢費</td>
-            <td>_63保險公司指定醫師費</td>
-            <td>_64頭皮諮詢</td>
-            <td>_65疼痛麻醉費</td>
-            <td>_66疼痛麻醉材料費</td>
-            <td>_67無痛鏡檢麻醉費</td>
-            <td>_68無痛鏡檢材料費</td>
+            @* <td>_05心電圖費</td>
+                <td>_06X光費</td>
+                <td>_07X光材料費</td>
+                <td>_08醫療衛材費</td>
+                <td>_09治療費</td>
+                <td>_10手術房費</td>
+                <td>_11麻醉藥品費</td>
+                <td>_12助理醫師費</td>
+                <td>_13護理費</td>
+                <td>_14洗腎費</td>
+                <td>_15證明書費</td>
+                <td>_16復健治療費</td>
+                <td>_17育嬰費</td>
+                <td>_18斷層攝影費</td>
+                <td>_19本院助手費</td>
+                <td>_20核子檢驗費</td>
+                <td>_21切片檢查費</td>
+                <td>_22尿動力測驗</td>
+                <td>_23電話費</td>
+                <td>_24手續費</td>
+                <td>_25一般材料費</td>
+                <td>_26病歷摘要</td>
+                <td>_27檢驗材料費</td>
+                <td>_28手術材料費</td>
+                <td>_29 </td>
+                <td>_30掛號費</td>
+                <td>_31診察費</td>
+                <td>_32門診會診費</td>
+                <td>_33住院會診費</td>
+                <td>_34手術費</td>
+                <td>_35麻醉費</td>
+                <td>_36助手費</td>
+                <td>_37加護病房費</td>
+                <td>_38眼科技術費</td>
+                <td>_39特別護士費</td>
+                <td>_40特別材料費</td>
+                <td>_41技術治療費</td>
+                <td>_42血片判讀費</td>
+                <td>_43健保門診自付款</td>
+                <td>_44健保住診自付款</td>
+                <td>_45藥事服務費</td>
+                <td>_46初診工本費</td>
+                <td>_47影印費</td>
+                <td>_48衛教費</td>
+                <td>_49指定醫師費</td>
+                <td>_50醫療諮詢費</td>
+                <td>_51輔具費</td>
+                <td>_52檢查費</td>
+                <td>_53精神科鑑定費</td>
+                <td>_54實習費</td>
+                <td>_55醫事服務費</td>
+                <td>_56醫美技術治療費</td>
+                <td>_57營養配方</td>
+                <td>_58處置費</td>
+                <td>_59</td>
+                <td>_60健康檢查</td>
+                <td>_61影印費</td>
+                <td>_62病情諮詢費</td>
+                <td>_63保險公司指定醫師費</td>
+                <td>_64頭皮諮詢</td>
+                <td>_65疼痛麻醉費</td>
+                <td>_66疼痛麻醉材料費</td>
+                <td>_67無痛鏡檢麻醉費</td>
+                <td>_68無痛鏡檢材料費</td> *@
         </tr>
+
     </thead>
+    
     <tbody>
+        @{
+            var i = 1;
+        }
+
         @foreach (var p in Model.dto)
         {
             <tr>
+                <td>@i</td>
+                <td>拆帳字串</td>
                 <td>@p.病患姓名</td>
-                <td>@p._01病房費</td>
-                <td>@p._02膳食費</td>
-                <td>@p._03藥品費</td>
+                @* <td>@p._01病房費</td>
+                    <td>@p._02膳食費</td>
+                    <td>@p._03藥品費</td> *@
                 <td>@p._04檢驗費</td>
-                <td>@p._05心電圖費</td>
-                <td>@p._06X光費</td>
-                <td>@p._07X光材料費</td>
-                <td>@p._08醫療衛材費</td>
-                <td>@p._09治療費</td>
-                <td>@p._10手術房費</td>
-                <td>@p._11麻醉藥品費</td>
-                <td>@p._12助理醫師費</td>
-                <td>@p._13護理費</td>
-                <td>@p._14洗腎費</td>
-                <td>@p._15證明書費</td>
-                <td>@p._16復健治療費</td>
-                <td>@p._17育嬰費</td>
-                <td>@p._18斷層攝影費</td>
-                <td>@p._19本院助手費</td>
-                <td>@p._20核子檢驗費</td>
-                <td>@p._21切片檢查費</td>
-                <td>@p._22尿動力測驗</td>
-                <td>@p._23電話費</td>
-                <td>@p._24手續費</td>
-                <td>@p._25一般材料費</td>
-                <td>@p._26病歷摘要</td>
-                <td>@p._27檢驗材料費</td>
-                <td>@p._28手術材料費</td>
-                <td>@p._29 </td>
-                <td>@p._30掛號費</td>
-                <td>@p._31診察費</td>
-                <td>@p._32門診會診費</td>
-                <td>@p._33住院會診費</td>
-                <td>@p._34手術費</td>
-                <td>@p._35麻醉費</td>
-                <td>@p._36助手費</td>
-                <td>@p._37加護病房費</td>
-                <td>@p._38眼科技術費</td>
-                <td>@p._39特別護士費</td>
-                <td>@p._40特別材料費</td>
-                <td>@p._41技術治療費</td>
-                <td>@p._42血片判讀費</td>
-                <td>@p._43健保門診自付款</td>
-                <td>@p._44健保住診自付款</td>
-                <td>@p._45藥事服務費</td>
-                <td>@p._46初診工本費</td>
-                <td>@p._47影印費</td>
-                <td>@p._48衛教費</td>
-                <td>@p._49指定醫師費</td>
-                <td>@p._50醫療諮詢費</td>
-                <td>@p._51輔具費</td>
-                <td>@p._52檢查費</td>
-                <td>@p._53精神科鑑定費</td>
-                <td>@p._54實習費</td>
-                <td>@p._55醫事服務費</td>
-                <td>@p._56醫美技術治療費</td>
-                <td>@p._57營養配方</td>
-                <td>@p._58處置費</td>
-                <td>@p._59</td>
-                <td>@p._60健康檢查</td>
-                <td>@p._61影印費</td>
-                <td>@p._62病情諮詢費</td>
-                <td>@p._63保險公司指定醫師費</td>
-                <td>@p._64頭皮諮詢</td>
-                <td>@p._65疼痛麻醉費</td>
-                <td>@p._66疼痛麻醉材料費</td>
-                <td>@p._67無痛鏡檢麻醉費</td>
-                <td>@p._68無痛鏡檢材料費</td>
+                @* <td>@p._05心電圖費</td>
+                    <td>@p._06X光費</td>
+                    <td>@p._07X光材料費</td>
+                    <td>@p._08醫療衛材費</td>
+                    <td>@p._09治療費</td>
+                    <td>@p._10手術房費</td>
+                    <td>@p._11麻醉藥品費</td>
+                    <td>@p._12助理醫師費</td>
+                    <td>@p._13護理費</td>
+                    <td>@p._14洗腎費</td>
+                    <td>@p._15證明書費</td>
+                    <td>@p._16復健治療費</td>
+                    <td>@p._17育嬰費</td>
+                    <td>@p._18斷層攝影費</td>
+                    <td>@p._19本院助手費</td>
+                    <td>@p._20核子檢驗費</td>
+                    <td>@p._21切片檢查費</td>
+                    <td>@p._22尿動力測驗</td>
+                    <td>@p._23電話費</td>
+                    <td>@p._24手續費</td>
+                    <td>@p._25一般材料費</td>
+                    <td>@p._26病歷摘要</td>
+                    <td>@p._27檢驗材料費</td>
+                    <td>@p._28手術材料費</td>
+                    <td>@p._29 </td>
+                    <td>@p._30掛號費</td>
+                    <td>@p._31診察費</td>
+                    <td>@p._32門診會診費</td>
+                    <td>@p._33住院會診費</td>
+                    <td>@p._34手術費</td>
+                    <td>@p._35麻醉費</td>
+                    <td>@p._36助手費</td>
+                    <td>@p._37加護病房費</td>
+                    <td>@p._38眼科技術費</td>
+                    <td>@p._39特別護士費</td>
+                    <td>@p._40特別材料費</td>
+                    <td>@p._41技術治療費</td>
+                    <td>@p._42血片判讀費</td>
+                    <td>@p._43健保門診自付款</td>
+                    <td>@p._44健保住診自付款</td>
+                    <td>@p._45藥事服務費</td>
+                    <td>@p._46初診工本費</td>
+                    <td>@p._47影印費</td>
+                    <td>@p._48衛教費</td>
+                    <td>@p._49指定醫師費</td>
+                    <td>@p._50醫療諮詢費</td>
+                    <td>@p._51輔具費</td>
+                    <td>@p._52檢查費</td>
+                    <td>@p._53精神科鑑定費</td>
+                    <td>@p._54實習費</td>
+                    <td>@p._55醫事服務費</td>
+                    <td>@p._56醫美技術治療費</td>
+                    <td>@p._57營養配方</td>
+                    <td>@p._58處置費</td>
+                    <td>@p._59</td>
+                    <td>@p._60健康檢查</td>
+                    <td>@p._61影印費</td>
+                    <td>@p._62病情諮詢費</td>
+                    <td>@p._63保險公司指定醫師費</td>
+                    <td>@p._64頭皮諮詢</td>
+                    <td>@p._65疼痛麻醉費</td>
+                    <td>@p._66疼痛麻醉材料費</td>
+                    <td>@p._67無痛鏡檢麻醉費</td>
+                    <td>@p._68無痛鏡檢材料費</td> *@
             </tr>
+            i++;
+        }
+        @foreach (var p in ViewBag.q5)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@p.繳費來源</td>
+                <td>@p.姓名</td>
+                <td>@p.檢驗費</td>
+            </tr>
+            i++;
+        }
+        @foreach (var p in ViewBag.q6)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@p.繳費來源</td>
+                <td>@p.姓名</td>
+                <td>@p.檢驗費</td> 
+            </tr>
+            i++;
         }
 
     </tbody>
@@ -168,11 +206,11 @@
 @* <script type='text/javascript'>
 
     const pa = {
-        "date": $('#date').val(),
-        
+    "date": $('#date').val(),
+
     }
 
     const data1 = JSON.stringify(pa);
     const urlx = '@ViewBag.uRI' + 'CheckOne';
 
-</script> *@
+    </script> *@

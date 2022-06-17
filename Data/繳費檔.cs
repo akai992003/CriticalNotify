@@ -20,14 +20,18 @@ public class 繳費檔
     public Single 實收檢驗費 { get; set; }
     public Single 實收檢查費 { get; set; }
 }
+public class dto檢驗繳費來源
+{
+    public string? 繳費來源 { get; set; }
+    public string? 姓名 { get; set; }
+    public double 檢驗費 { get; set; }
 
+}
 public class dto拆帳字串2
 {
     public string dto日期 { get; set; }
     public List<dto拆帳字串> dto { get; set; }
 }
-
-
 public class dto拆帳字串
 {
 
@@ -102,10 +106,13 @@ public class dto拆帳字串
     public double _68無痛鏡檢材料費 { get; set; }
 }
 
+
 public interface I繳費Service
 {
+    Task<List<dto檢驗繳費來源>> 取得檢驗費List(string 日期);
+    Task<List<dto檢驗繳費來源>> 取得檢驗費List_體一(string 日期, string 費用單位);
     Task<List<繳費檔>> 取得拆帳字串(string 日期);
-    Task<List<繳費檔>> 取得拆帳字串(string 日期, string 費用單位);
+    Task<List<繳費檔>> 取得拆帳字串_體一(string 日期, string 費用單位);
 
     Task<double> 取得檢驗費(string 日期);
     Task<double> 取得檢驗費(string 日期, string 費用單位);
@@ -115,17 +122,57 @@ public interface I繳費Service
 public class 繳費Service : I繳費Service
 {
     public 繳費Service(HNContext _HNContext) { }
+    public async Task<List<dto檢驗繳費來源>> 取得檢驗費List(string 日期)
+    {
+        using var context = new HNContext();
+        var q = await (from p in context.繳費檔
+                       where
+                       //p.counter == 4923751
+                       p.拆帳字串 != null && p.拆帳字串 != "" && p.付款方式代碼 != "1" && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
+                       && p.日期 == 日期 &&
+                          (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
+                          || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
+                       && p.註銷否 == "N"
 
+                       select new dto檢驗繳費來源
+                       {
+                           繳費來源 = "院內",
+                           姓名 = p.姓名,
+                           檢驗費 = p.實收檢驗費
+
+                       }).ToListAsync();
+        return q;
+    }
+    public async Task<List<dto檢驗繳費來源>> 取得檢驗費List_體一(string 日期,string 費用單位)
+    {
+        using var context = new HNContext();
+        var q = await (from p in context.繳費檔
+                       where
+                       //p.counter == 4923751
+                       p.拆帳字串 != null && p.拆帳字串 != "" && p.付款方式代碼 != "1" && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
+                       && p.日期 == 日期 &&
+                          (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
+                          || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
+                        && p.註銷否 == "N" && (p.醫師代號.Contains("ZZ1") || p.醫師代號.Contains("360"))
+                       select new dto檢驗繳費來源
+                       {
+                           繳費來源 = "體一",
+                           姓名 = p.姓名,
+                           檢驗費 = p.實收檢驗費
+
+                       }).ToListAsync();
+        return q;
+    }
     public async Task<List<繳費檔>> 取得拆帳字串(string 日期)
     {
         using var context = new HNContext();
         var q = await (from p in context.繳費檔
                        where
                        //p.counter == 4923751
-                       p.拆帳字串 != null && p.拆帳字串 != "" && p.付款方式代碼 != "1"
-                       && p.日期 == 日期 && p.經手人代號.Contains("A12364")
-                       //    (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
-                       //    || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
+                       p.拆帳字串 != null && p.拆帳字串 != "" && p.付款方式代碼 != "1" && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
+                       && p.日期 == 日期 &&
+                          (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
+                          || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
                        && p.註銷否 == "N"
 
                        select new 繳費檔
@@ -136,13 +183,13 @@ public class 繳費Service : I繳費Service
         return q;
 
     }
-    public async Task<List<繳費檔>> 取得拆帳字串(string 日期, string 費用單位) //從上面的總金額拆出體檢一組的檢驗費用
+    public async Task<List<繳費檔>> 取得拆帳字串_體一(string 日期, string 費用單位) //從上面的總金額拆出體檢一組的檢驗費用
     {
         using var context = new HNContext();
         var q = await (from p in context.繳費檔
                        where
                        //p.counter == 4923751
-                       p.拆帳字串 != null && p.拆帳字串 != "" && p.付款方式代碼 != "1"
+                       p.拆帳字串 != null && p.拆帳字串 != "" && p.付款方式代碼 != "1" && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
                        && p.日期 == 日期 && (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
                        || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
                        && p.註銷否 == "N" && (p.醫師代號.Contains("ZZ1") || p.醫師代號.Contains("360"))
@@ -162,9 +209,9 @@ public class 繳費Service : I繳費Service
         var q = await (from p in context.繳費檔
                        where p.日期 == 日期
 
-                       && p.付款方式代碼 != "1" && p.經手人代號.Contains("A12364")
-                       //    && (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
-                       //    || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
+                       && p.付款方式代碼 != "1" && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
+                          && (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
+                          || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
                        && p.註銷否 == "N"
                         && p.拆帳字串 == null
                        //    && p.counter == 4921007
@@ -185,7 +232,7 @@ public class 繳費Service : I繳費Service
                        where
                        //p.counter == 4923751
                        p.日期 == 日期
-                       && p.付款方式代碼 != "1"
+                       && p.付款方式代碼 != "1" && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
                        && (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
                        || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
                        && p.註銷否 == "N" && (p.醫師代號.Contains("ZZ1") || p.醫師代號.Contains("360"))
@@ -206,7 +253,7 @@ public class 繳費Service : I繳費Service
                        where
                        //p.counter == 4923751
                        p.日期 == 日期
-                       && p.付款方式代碼 != "1"
+                       && p.付款方式代碼 != "1" && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
                        && (p.經手人代號.Contains("A11784") || p.經手人代號.Contains("A12240") || p.經手人代號.Contains("A12364") || p.經手人代號.Contains("A11771")
                        || p.經手人代號.Contains("A12551") || p.經手人代號.Contains("A12433") || p.經手人代號.Contains("A0681") || p.經手人代號.Contains("A12432") || p.經手人代號.Contains("A10653"))
                        && p.註銷否 == "N"
