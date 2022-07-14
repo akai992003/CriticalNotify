@@ -10,6 +10,7 @@ namespace CriticalNotify.Controllers;
 // TODO 通報完成後的頁面要考慮是不是要做一個頁面出來用，還是跳回宏恩醫院官網?
 // TODO 想一下通報完成後能不能再回上一頁修改，雖然時間會update?
 // TODO 第一次執行index頁面時送出按鈕disable怎麼弄?
+// TODO 記得如果登入資訊失效要做return url 登入成功後返回該結果檔counter頁面
 
 [Authorize]
 public class HomeController : Controller
