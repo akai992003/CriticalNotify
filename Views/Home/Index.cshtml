@@ -1,16 +1,74 @@
 ﻿@{
     ViewData["Title"] = "Country Hospital";
 }
-@model  CriticalNotify.Data.危急值通報檔;
+@model CriticalNotify.Data.危急值通報檔2;
 
 <div class="text-center">
-    <h1 class="display-8">危急值通報回應</h1>
+    <h1 class="display-8">危急值通報回應系統</h1>
     <hr>
     <h4 class="text-left">
-    <p class="text-info">病患病歷號:</p> <br>
-    <p>病患姓名:@Model.病患檔_counter</p> <br>
-    <p>檢查項目:@Model.流水單號</p><br>
-    <p>檢查結果:</p> <br>
+        @* <p class="text-info">病患病歷號:</p> <br>
+            <p>病患姓名:@Model.病患檔_counter</p> <br>
+            <p>檢查項目:@Model.流水單號</p><br>
+            <p>檢查結果:</p> <br> *@
     </h4>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>病歷號碼</th>
+                <th>姓名</th>
+                <th>檢查項目</th>
+            </tr>
+            <tr>
+                <td>@Model.病歷號碼</td>
+                <td>@Model.姓名</td>
+                <td>@Model.檢查項目</td>
+            </tr>
+
+            <tr>
+                <th colspan="3">檢查報告</th>
+            </tr>
+            <tr>
+                <td colspan="3">@Model.檢查結果</th>
+            </tr>
+        </thead>
+    </table>
+    <form asp-controller="Home" asp-action="Index" method="post">
+        <input type="hidden" value="@Model.counter" name="counter">
+        <div class="col-sm-12">
+            <label class="form-label text-ftf2" for="txt1">回覆內容</label>
+            <textarea class="form-control" name="回覆內容" id="txt1" rows="3" 
+                placeholder="請輸入此病人需處置內容...">@Model.回覆內容</textarea>
+            <br>
+        </div>
+        <div class="col-sm-12">
+            <button class="btn btn-outline-danger" type="button" id="btn1" onclick="do1('通知家屬');">通知家屬</button>
+            <button class="btn btn-outline-danger" type="button" id="btn2" onclick="do1('轉院');">轉院</button>
+            <button class="btn btn-outline-danger" type="button" id="btn3" onclick="do1('抗生素持續');">抗生素持續</button>
+            <button class="btn btn-outline-danger" type="button" id="btn4" onclick="do1('轉加護病房');">轉加護病房</button>
+            <button class="btn btn-outline-danger" type="button" id="btn5" onclick="do1('定時監測體溫');">定時監測體溫</button>
+        </div>
+        <br>
+        <div class="col-sm-12">
+            <input class="btn btn-success" type="submit" value="送出">
+        </div>
+    </form>
 </div>
- 
+
+<script>
+    //old
+    function do1(s) {
+        if ($('#txt1').val() == '') {
+            $('#txt1').val($('#txt1').val() + s);
+        }
+        else {
+            $('#txt1').val($('#txt1').val() + '、' + s);
+        }
+    }
+    // new 
+    do2 = (s) => {
+        $('#txt1').val($('#txt1').val() + s);
+    }
+</script>
+

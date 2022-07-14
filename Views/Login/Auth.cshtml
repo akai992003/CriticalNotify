@@ -1,0 +1,14 @@
+
+@model CriticalNotify.LoginAuth;
+@{
+    Layout = null;
+}
+<form asp-controller="Login" asp-action="Auth" method="post">
+<div class="row">
+    <div class="col-sm-9">
+        <label for="id">請輸入身份證字號:</label>
+        <input type="text" name="id">
+        <input class="btn btn-success" type="submit" value="送出">
+    </div>
+</div>
+</form>

@@ -21,6 +21,13 @@ public class WSController : ControllerBase
         I危急值通報檔 =_危急值通報檔;
 
     }
+
+    public class PageInfor
+    {
+        病患檔 p病患檔{get;set;}
+        報告台結果檔 p報告台結果檔{get;set;}
+
+    }
     //給方鼎呼叫的ws 需要他們從檢驗報到台、報告登錄台、報告報到台傳入參數
     [HttpGet("criti_report")]
     public async Task<IActionResult> criti_report1(string type, int counter, string empno)
@@ -70,13 +77,12 @@ public class WSController : ControllerBase
     public async Task<IActionResult> msg_call1(int counter)
     {
         var q = await this.I危急值通報檔.Get危急值通報檔ByCounter(counter);
+        
         return Ok(new
         {
             data = q
         });
 
-
-        
     }
 
 

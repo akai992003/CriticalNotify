@@ -3,8 +3,15 @@ using CriticalNotify.Data;
 using CriticalNotify.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+
 namespace CriticalNotify.Controllers;
 
+// TODO 通報完成後的頁面要考慮是不是要做一個頁面出來用，還是跳回宏恩醫院官網?
+// TODO 想一下通報完成後能不能再回上一頁修改，雖然時間會update?
+// TODO 第一次執行index頁面時送出按鈕disable怎麼弄?
+
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -18,31 +25,48 @@ public class HomeController : Controller
         I危急值通報檔 = _危急值通報檔;
         I繳費 = _I繳費Service;
     }
-
+    
     public async Task<IActionResult> Index(int counter)
     {
 
-        var q = await I危急值通報檔.Get危急值通報檔ByCounter(counter);
-        return View(q);
+        var q危急值通報檔2 = await I危急值通報檔.Get危急值通報檔ByCounterJOIN(counter);
+        return View(q危急值通報檔2);
 
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Index(危急值通報檔2 dto)
+    {
+        if (dto.counter == 0)
+        {
+            return RedirectToAction("Index");
+        }
+        await I危急值通報檔.update危急值通報檔(dto);
+        dto.回覆內容 = "";
+        return RedirectToAction("Index2", "Home");
+
+
+    }
+
+    public IActionResult Index2(危急值通報檔2 dto)
+    {
+        return View();
+    }
+
+    // Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-TW");
+    // Thread.CurrentThread.CurrentCulture.DateTimeFormat.Calendar = new TaiwanCalendar();
+    // 當使用DateTime.Now.ToString()時，得到的就是民國年日期，而且是整個系統範圍皆適用。
+    // 若需要用到台灣陰陽曆(農民曆)處理，也可使用TaiwanLunisolarCalendar類別來做轉換，使用方式相同。
+    //如不想用下列方式取得民國日期，也可以在程式一開始執行時用上述方式指定執行序的文化與曆法
+
     [HttpGet]
-
-
-
-// Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-TW");
-// Thread.CurrentThread.CurrentCulture.DateTimeFormat.Calendar = new TaiwanCalendar();
-// 當使用DateTime.Now.ToString()時，得到的就是民國年日期，而且是整個系統範圍皆適用。
-// 若需要用到台灣陰陽曆(農民曆)處理，也可使用TaiwanLunisolarCalendar類別來做轉換，使用方式相同。
-//如不想用下列方式取得民國日期，也可以在程式一開始執行時用上述方式指定執行序的文化與曆法
-
+    [Authorize]
     public async Task<IActionResult> Privacy(string rtn日期)
     {
         System.Globalization.TaiwanCalendar tc = new System.Globalization.TaiwanCalendar();
-        DateTime d =  DateTime.Now.AddDays(-1);
-        
-        string chineseDate = string.Format("{0}{1}{2}",tc.GetYear(d),tc.GetMonth(d).ToString().PadLeft(2,'0'),tc.GetDayOfMonth(d).ToString().PadLeft(2,'0'));
+        DateTime d = DateTime.Now.AddDays(-1);
+
+        string chineseDate = string.Format("{0}{1}{2}", tc.GetYear(d), tc.GetMonth(d).ToString().PadLeft(2, '0'), tc.GetDayOfMonth(d).ToString().PadLeft(2, '0'));
         if (rtn日期 == "" || rtn日期 == null)
         {
             rtn日期 = chineseDate;
@@ -243,7 +267,7 @@ public class HomeController : Controller
         ViewBag.檢驗科檢驗費 = 檢驗科檢驗費.ToString("N0");
 
         var q5 = await I繳費.取得檢驗費List(rtn日期);
-        var q6 = await I繳費.取得檢驗費List_體一(rtn日期,"體一");
+        var q6 = await I繳費.取得檢驗費List_體一(rtn日期, "體一");
         ViewBag.q5 = q5;
         ViewBag.q6 = q6;
         var r1_1 = dl.Where(c => c._04檢驗費 != 0).ToList();
@@ -263,6 +287,16 @@ public class HomeController : Controller
         return RedirectToAction("Privacy", "Home", new { rtn日期 = dto1.dto日期 });
     }
 
+
+    public async Task<IActionResult> Reply(危急值通報檔2 dto)
+    {
+        var sdate = DateTime.Now.ToString("yyyyMMdd");
+        var edate = DateTime.Now.ToString("yyyyMMdd");
+        ViewBag.sdate = sdate;
+        ViewBag.edate = edate;
+        var r1 = await I危急值通報檔.Get危急值通報檔(sdate, edate);
+        return View(r1);
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

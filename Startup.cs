@@ -49,8 +49,10 @@ namespace CriticalNotify
             services.AddScoped<I病患檔Service, 病患檔Service>();
             services.AddScoped<I報告台結果檔Service, 報告台結果檔Service>();
             services.AddScoped<I危急值通報檔Service, 危急值通報檔Service>();
-            services.AddScoped<I繳費Service,繳費Service>();
-
+            services.AddScoped<I繳費Service, 繳費Service>();
+            services.AddScoped<I門診處置內容檔Service, 門診處置內容檔Service>();
+            services.AddScoped<I住診處置內容檔Service, 住診處置內容檔Service>();
+            services.AddScoped<I人事資料檔Service, 人事資料檔Service>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //* get IP */
             services.AddHttpContextAccessor();
@@ -75,6 +77,14 @@ namespace CriticalNotify
                     });
             });
 
+            // 111.07.04 akai 為了新增登入頁面加的 start
+            services.AddAuthentication("Cookies")
+            .AddCookie("Cookies", Options =>
+            {
+                Options.LoginPath = "/Login/Auth";
+            });                                                                   
+            services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ConfigureCookie>();
+            // 111.07.04 akai 為了新增登入頁面加的 end
 
             services.Configure<CookiePolicyOptions>(options =>
             {

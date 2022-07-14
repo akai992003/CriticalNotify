@@ -7,6 +7,7 @@ public class mydto
 
 }
 
-
-
-
+public class LoginAuth
+{
+    public string id { get; set; }
+}

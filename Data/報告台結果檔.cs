@@ -21,6 +21,7 @@ namespace CriticalNotify.Data
         public string 報告師代號{get;set;}
         public string 流程旗標{get;set;}
         public string 申請流水號 {get;set;}
+        public string 報告內容 {get;set;}
     }
     public interface I報告台結果檔Service
     {

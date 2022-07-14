@@ -9,6 +9,7 @@ namespace CriticalNotify.Data
         public int counter {get;set;}
         public string? 姓名 {get;set;}
         public string? 身份證字號 {get;set;}
+        public string? 病歷號碼 {get;set;}
 
     }
 
@@ -35,7 +36,8 @@ namespace CriticalNotify.Data
                                {
                                    counter = p.counter,
                                    姓名 = p.姓名,
-                                   身份證字號 = p.身份證字號
+                                   身份證字號 = p.身份證字號,
+                                   病歷號碼 = p.病歷號碼
                                }).FirstOrDefaultAsync();
                                if (q == null)
                                {
@@ -59,7 +61,8 @@ namespace CriticalNotify.Data
                                {
                                    counter = p.counter,
                                    姓名 = p.姓名,
-                                   身份證字號 = p.身份證字號
+                                   身份證字號 = p.身份證字號,
+                                   病歷號碼 = p.病歷號碼
                                }).ToListAsync();
                                if (q == null)
                                {

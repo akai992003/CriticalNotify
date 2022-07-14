@@ -1,0 +1,70 @@
+@model IEnumerable<CriticalNotify.Data.危急值通報檔2>
+
+<table class="table table-striped table-bordered">
+    @* <figure class="text-center">
+        <blockquote class="blockquote">
+        <p>A well-known quote, contained in a blockquote element.</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+        Someone famous in <cite title="Source Title">Source Title</cite>
+        </figcaption>
+        </figure> *@
+
+    <thead>
+        <h1 class="text-center display-6">危急值通報清單</h1>
+    </thead>
+    <div class="row">
+        <div class="col-sm-3">
+            <button class="btn btn-primary btn-large btn-block" type="button" id="btn1">未回覆</button>
+            <button class="btn btn-success btn-large btn-block" type="button" id="btn2">已回覆</button>
+            <button class="btn btn-secondary btn-large btn-block" type="button" id="btn3">全部</button>
+        </div>
+        <div class="col-sm-9">
+            <label for="str_date">統計起日:</label>
+            <input type="date" id="str_date" value="@ViewBag.sdate">
+            
+            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+            <label for="end_date">統計迄日:</label>
+            <input type="date" id="end_date" value="@ViewBag.edate">
+        </div>
+    </div>
+    <br>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>流程旗標</th>
+            <th>檢查單號</th>
+            <th>病歷號碼</th>
+            <th>病患姓名</th>
+            <th>通報日期</th>
+            <th>回覆內容</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            var i = 1;
+        }
+
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@p.流程旗標</td>
+                <td>@p.流水單號</td>
+                <td>@p.病歷號碼</td>
+                <td>@p.姓名</td>
+                <td>@p.通報日期</td>
+                @if (@p.流程旗標 == "回")
+                {
+                    <td><button class="btn btn-link" id="btn" + i type="button">檢視</button></td>
+                }
+                else
+                {
+                    <td></td>
+                }
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>

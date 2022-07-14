@@ -1,33 +1,47 @@
 ﻿@* @model IEnumerable<CriticalNotify.Data.dto拆帳字串2>; *@
 @model CriticalNotify.Data.dto拆帳字串2;
 <form asp-controller="Home" asp-action="Privacy" method="post">
+    <label for="">繳費日期:</label>
     <input type="text" name="dto日期" id="dto日期" value="@Model.dto日期" />
     <input type="submit" value="execute" />
 
 </form>
 
-<table>
-    <tr>
-        <td><h4>total檢驗費 : @ViewBag.total 元</h4></td>
-        <td><h4>檢驗費(體一) : @ViewBag.total檢驗費體一 元</h4></td>
-        <td><h4>檢驗費(院內) : @ViewBag.院內檢驗費 元</h4></td>
-        <td><h4>檢驗費(檢驗科) : @ViewBag.檢驗科檢驗費 元</h4></td>
-        </tr>
-</table>
 <table class="table table-striped table-bordered">
     <thead>
-       
-        
-
-
         <tr>
-            <td>#</td>
-            <td>資料來源</td>
-            <td>病患姓名</td>
+            <th>total檢驗費</th>
+            <th>檢驗費(體一)</th>
+            <th>檢驗費(院內)</th>
+            <th>檢驗費(檢驗科)</th>
+        </tr>
+        <tr>
+            <td>
+                @ViewBag.total 元
+            </td>
+            <td>
+                @ViewBag.total檢驗費體一 元
+            </td>
+            <td>
+                @ViewBag.院內檢驗費 元
+            </td>
+            <td>
+                @ViewBag.檢驗科檢驗費 元
+            </td>
+        </tr>
+    </thead>
+</table>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td colspan="1">#</td>
+            <td colspan="2">資料來源</td>
+            <td colspan="8">病患姓名</td>
             @* <td>_01病房費</td>
                 <td>_02膳食費</td>
                 <td>_03藥品費</td> *@
-            <td>_04檢驗費</td>
+            <td colspan="3">_04檢驗費</td>
             @* <td>_05心電圖費</td>
                 <td>_06X光費</td>
                 <td>_07X光材料費</td>
@@ -95,7 +109,7 @@
         </tr>
 
     </thead>
-    
+
     <tbody>
         @{
             var i = 1;
@@ -104,13 +118,13 @@
         @foreach (var p in Model.dto)
         {
             <tr>
-                <td>@i</td>
-                <td>拆帳字串</td>
-                <td>@p.病患姓名</td>
+                <td colspan="1">@i</td>
+                <td colspan="2">拆帳字串</td>
+                <td colspan="8">@p.病患姓名</td>
                 @* <td>@p._01病房費</td>
                     <td>@p._02膳食費</td>
                     <td>@p._03藥品費</td> *@
-                <td>@p._04檢驗費</td>
+                <td colspan="3">@p._04檢驗費</td>
                 @* <td>@p._05心電圖費</td>
                     <td>@p._06X光費</td>
                     <td>@p._07X光材料費</td>
@@ -181,20 +195,20 @@
         @foreach (var p in ViewBag.q5)
         {
             <tr>
-                <td>@i</td>
-                <td>@p.繳費來源</td>
-                <td>@p.姓名</td>
-                <td>@p.檢驗費</td>
+                <td colspan="1">@i</td>
+                <td colspan="2">@p.繳費來源</td>
+                <td colspan="8">@p.姓名</td>
+                <td colspan="3">@p.檢驗費</td>
             </tr>
             i++;
         }
         @foreach (var p in ViewBag.q6)
         {
             <tr>
-                <td>@i</td>
-                <td>@p.繳費來源</td>
-                <td>@p.姓名</td>
-                <td>@p.檢驗費</td> 
+                <td colspan="1">@i</td>
+                <td colspan="2">@p.繳費來源</td>
+                <td colspan="8">@p.姓名</td>
+                <td colspan="3">@p.檢驗費</td>
             </tr>
             i++;
         }
