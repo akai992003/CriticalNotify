@@ -4,6 +4,8 @@ using CriticalNotify.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace CriticalNotify.Controllers;
 
@@ -16,21 +18,26 @@ namespace CriticalNotify.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly I危急值通報檔Service I危急值通報檔;
+    private readonly I危急值通報檔Service I危急;
     private readonly I繳費Service I繳費;
+    private readonly I人事資料檔Service I人事;
 
-    public HomeController(ILogger<HomeController> logger, I危急值通報檔Service _危急值通報檔
-    , I繳費Service _I繳費Service)
+
+    public HomeController(ILogger<HomeController> logger
+    , I危急值通報檔Service _危急值通報檔Service
+    , I繳費Service _I繳費Service
+    , I人事資料檔Service _I人事資料檔Service)
     {
         _logger = logger;
-        I危急值通報檔 = _危急值通報檔;
+        I危急 = _危急值通報檔Service;
         I繳費 = _I繳費Service;
+        I人事 = _I人事資料檔Service;
     }
 
     public async Task<IActionResult> Index(int counter)
     {
 
-        var q危急值通報檔2 = await I危急值通報檔.Get危急值通報檔ByCounterJOIN(counter);
+        var q危急值通報檔2 = await I危急.Get危急值通報檔ByCounterJOIN(counter);
         return View(q危急值通報檔2);
 
     }
@@ -42,7 +49,7 @@ public class HomeController : Controller
         {
             return RedirectToAction("Index");
         }
-        await I危急值通報檔.update危急值通報檔(dto);
+        await I危急.update危急值通報檔(dto);
         dto.回覆內容 = "";
         return RedirectToAction("Index2", "Home");
 
@@ -76,7 +83,6 @@ public class HomeController : Controller
         var q2 = await I繳費.取得拆帳字串_體一(rtn日期, "體一");
         var dl = new List<dto拆帳字串>();
         var dl2 = new List<dto拆帳字串>();
-        var mo = 0;
 
         foreach (var pa in q)
         {
@@ -282,39 +288,72 @@ public class HomeController : Controller
 
     [HttpPost]
 
-    public async Task<IActionResult> Privacy(dto拆帳字串2 dto1)
+    public IActionResult Privacy(dto拆帳字串2 dto1)
     {
 
         return RedirectToAction("Privacy", "Home", new { rtn日期 = dto1.dto日期 });
     }
 
+    public IActionResult GoReply(string acc)
+    {
+        TempData["acc"] = acc;
+        return RedirectToAction("Reply", "Home");
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Reply(危急值通報檔2 dto)
     {
+        var retundto = new dtoDateTo危急值通報檔();
+        if (TempData["acc"] == null)
+        {
+            // TODO 記得判斷空值要幹麼。
+            retundto.dto危急值通報檔2 = new List<危急值通報檔2>();
+            return View(retundto);
+        }
+
+        var acc = TempData["acc"].ToString();
+        var r2 = await I人事.Get人事資料檔By代號(acc);
+
+        if (r2.counter == 0) //如果沒有這個人事代號
+        {
+            retundto.dto危急值通報檔2 = new List<危急值通報檔2>();
+            return View(retundto);
+        }
+
         var sdate = DateTime.Now.AddDays(-90);
         var edate = DateTime.Now;
-        var r1 = await I危急值通報檔.Get危急值通報檔(sdate, edate, "回", "");
-        var retundto = new dtoDateTo危急值通報檔();
+        var r1 = await I危急.Get危急值通報檔(sdate, edate, "回", "");
+
         retundto.病歷號碼 = "";
         retundto.sdate = DateTime.Now;
         retundto.str_date = sdate.ToString("yyyy-MM-dd");
         retundto.end_date = edate.ToString("yyyy-MM-dd");
         retundto.dto危急值通報檔2 = r1;
+
+        retundto.acc = acc;
         return View(retundto);
 
     }
+
     [HttpPost]
     public async Task<IActionResult> Reply(dtoDateTo危急值通報檔 dto)
     {
+        var retundto = new dtoDateTo危急值通報檔();
+        if (dto.acc == "" || dto.acc == null)
+        {
+            retundto.dto危急值通報檔2 = new List<危急值通報檔2>();
+            return View(retundto);
+        }
         var sdate = dto.sdate;
         var edate = dto.edate;
         string 病歷號碼 = dto.病歷號碼;
-        var r1 = await I危急值通報檔.Get危急值通報檔(sdate, edate, dto.流程旗標, 病歷號碼);
-        var retundto = new dtoDateTo危急值通報檔();
+        var r1 = await I危急.Get危急值通報檔(sdate, edate, dto.流程旗標, 病歷號碼);
 
         retundto.str_date = sdate.ToString("yyyy-MM-dd");
         retundto.end_date = edate.ToString("yyyy-MM-dd");
         retundto.病歷號碼 = 病歷號碼;
         retundto.dto危急值通報檔2 = r1;
+        retundto.acc = dto.acc;
         return View(retundto);
     }
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

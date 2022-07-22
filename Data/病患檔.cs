@@ -7,9 +7,9 @@ namespace CriticalNotify.Data
     {
         [Key]
         public int counter {get;set;}
-        public string? 姓名 {get;set;}
-        public string? 身份證字號 {get;set;}
-        public string? 病歷號碼 {get;set;}
+        public string 姓名 {get;set;}
+        public string 身份證字號 {get;set;}
+        public string 病歷號碼 {get;set;}
 
     }
 

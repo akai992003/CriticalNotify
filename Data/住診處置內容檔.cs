@@ -7,8 +7,8 @@ namespace CriticalNotify.Data
         [Key]
         public int counter { get; set; }
         public int 結果檔_counter { get; set; }
-        public string? 處置簡稱 { get; set; }
-        public string? 處置代號 { get; set; }
+        public string 處置簡稱 { get; set; }
+        public string 處置代號 { get; set; }
 
     }
 

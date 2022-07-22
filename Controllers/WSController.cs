@@ -93,9 +93,9 @@ public class WSController : ControllerBase
     // }
 
     [HttpPost("test2")]
-    public async Task<IActionResult> mytest2(mydto d1)
+    public IActionResult mytest2(mydto d1)
     {
-        string? id = d1.type;
+        string id = d1.type;
         int counter = d1.counter;
         id = id + "after11111";
         counter += 100;

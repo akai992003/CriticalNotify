@@ -16,17 +16,17 @@
         </div>
         <div class="col-sm-9">
             <label for="str_date">通報日期起:</label>
-            <input type="date" id="str_date" value="@Model.str_date" name="sdate">
+            <input type="date" value="@Model.str_date" name="sdate">
 
             &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
             <label for="end_date">通報日期迄:</label>
-            <input type="date" id="end_date" value="@Model.end_date" name="edate">
+            <input type="date" value="@Model.end_date" name="edate">
             &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
             <label for="num">病歷號碼:</label>
             <input type="search" id="num" value="@Model.病歷號碼" name="病歷號碼">
         </div>
     </div>
-
+    <input type="hidden" value="@Model.acc" name="acc">
 </form>
 
 

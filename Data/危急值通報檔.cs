@@ -8,20 +8,21 @@ namespace CriticalNotify.Data
     {
         public DateTime sdate { get; set; }
         public DateTime edate { get; set; }
-        public string? str_date { get; set; }
-        public string? end_date { get; set; }
-        public string? 流程旗標 { get; set; }
-        public string? 病歷號碼 { get; set; }
-        public List<危急值通報檔2>? dto危急值通報檔2 { get; set; }
+        public string str_date { get; set; }
+        public string end_date { get; set; }
+        public string 流程旗標 { get; set; }
+        public string 病歷號碼 { get; set; }
+        public List<危急值通報檔2> dto危急值通報檔2 { get; set; }
+        public string acc { get; set; }
     }
     public class 危急值通報檔2 : 危急值通報檔
     {
-        public string? 姓名 { get; set; }
-        public string? 檢查結果 { get; set; }
-        public string? 檢查項目 { get; set; }
+        public string 姓名 { get; set; }
+        public string 檢查結果 { get; set; }
+        public string 檢查項目 { get; set; }
         public int 來源檔_counter { get; set; }
-        public string? 病歷號碼 { get; set; }
-        public string? 日期字串 { get; set; }
+        public string 病歷號碼 { get; set; }
+        public string 日期字串 { get; set; }
 
     }
     public class 危急值通報檔
@@ -30,18 +31,18 @@ namespace CriticalNotify.Data
         public int counter { get; set; }
         public int? 結果檔_counter { get; set; }
         public int? 病患檔_counter { get; set; }
-        public string? 檢查類別 { get; set; }
+        public string 檢查類別 { get; set; }
         public int? 來源代碼 { get; set; }
-        public string? 報告台代碼 { get; set; }
-        public string? 流水單號 { get; set; }
-        public string? 流程旗標 { get; set; }
+        public string 報告台代碼 { get; set; }
+        public string 流水單號 { get; set; }
+        public string 流程旗標 { get; set; }
         public DateTime 通報日期 { get; set; }
-        public string? 通報時間 { get; set; }
+        public string 通報時間 { get; set; }
         public DateTime 回覆日期 { get; set; }
-        public string? 回覆時間 { get; set; }
-        public string? 回覆內容 { get; set; }
-        public string? 通報人 { get; set; }
-        public string? 回覆醫師 { get; set; }
+        public string 回覆時間 { get; set; }
+        public string 回覆內容 { get; set; }
+        public string 通報人 { get; set; }
+        public string 回覆醫師 { get; set; }
     }
     public interface I危急值通報檔Service
     {

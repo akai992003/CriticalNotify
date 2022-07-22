@@ -10,8 +10,8 @@ public class 繳費檔
     [Key]
     public Int32 counter { get; set; }
     public Int32 病患檔_counter { get; set; }
-    public string? 姓名 { get; set; }
-    public string? 拆帳字串 { get; set; }
+    public string 姓名 { get; set; }
+    public string 拆帳字串 { get; set; }
     public string 日期 { get; set; }
     public string 經手人代號 { get; set; }
     public string 註銷否 { get; set; }
@@ -22,8 +22,8 @@ public class 繳費檔
 }
 public class dto檢驗繳費來源
 {
-    public string? 繳費來源 { get; set; }
-    public string? 姓名 { get; set; }
+    public string 繳費來源 { get; set; }
+    public string 姓名 { get; set; }
     public double 檢驗費 { get; set; }
 
 }
@@ -217,10 +217,7 @@ public class 繳費Service : I繳費Service
                        //    && p.counter == 4921007
                        select p.實收檢驗費).ToListAsync();
 
-        if (q.FirstOrDefault() == null)
-        {
-            return 0;
-        }
+       
         return q.Sum();
 
     }
@@ -239,10 +236,7 @@ public class 繳費Service : I繳費Service
                        // A11784=魏素華 ; A12240=袁小媛 ; A12364=蕭蕙華 ; A12551=張蘊禮 ; A12433=謝鴻豪 ; A0681=卓正玲 ; A12432=劉家蓉
                        && p.拆帳字串 == null
                        select p.實收檢驗費).ToListAsync();
-        if (q.FirstOrDefault() == null)
-        {
-            return 0;
-        }
+        
         return q.Sum();
 
     }
@@ -260,10 +254,7 @@ public class 繳費Service : I繳費Service
                        && (p.實收檢驗費 > 0 || p.實收檢查費 > 0)
                        // A11784=魏素華 ; A12240=袁小媛 ; A12364=蕭蕙華 ; A12551=張蘊禮 ; A12433=謝鴻豪 ; A0681=卓正玲 ; A12432=劉家蓉
                        select p.實收檢驗費).ToListAsync();
-        if (q.FirstOrDefault() == null)
-        {
-            return 0;
-        }
+       
         return q.Sum();
 
     }
