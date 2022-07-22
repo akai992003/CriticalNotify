@@ -1,5 +1,37 @@
-@model IEnumerable<CriticalNotify.Data.危急值通報檔2>
+@model CriticalNotify.Data.dtoDateTo危急值通報檔
+<h1 class="text-center display-6">危急值通報清單</h1>
 
+<form asp-controller="Home" asp-action="Reply" method="post">
+    @* <label for="">繳費日期:</label>
+        <input type="text" name="dto日期" id="dto日期" value="@Model.dto日期" />
+        <input type="submit" value="execute" /> *@
+    <div class="row">
+        <div class="col-sm-3">
+            <button class="btn btn-primary btn-large btn-block" type="submit" id="btn1" name="流程旗標"
+                value="通">未回覆</button>
+            <button class="btn btn-success btn-large btn-block" type="submit" id="btn2" name="流程旗標"
+                value="回">已回覆</button>
+            <button class="btn btn-secondary btn-large btn-block" type="submit" id="btn3" name="流程旗標"
+                value="全">全部</button>
+        </div>
+        <div class="col-sm-9">
+            <label for="str_date">通報日期起:</label>
+            <input type="date" id="str_date" value="@Model.str_date" name="sdate">
+
+            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+            <label for="end_date">通報日期迄:</label>
+            <input type="date" id="end_date" value="@Model.end_date" name="edate">
+            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+            <label for="num">病歷號碼:</label>
+            <input type="search" id="num" value="@Model.病歷號碼" name="病歷號碼">
+        </div>
+    </div>
+
+</form>
+
+
+
+<br>
 <table class="table table-striped table-bordered">
     @* <figure class="text-center">
         <blockquote class="blockquote">
@@ -10,25 +42,8 @@
         </figcaption>
         </figure> *@
 
-    <thead>
-        <h1 class="text-center display-6">危急值通報清單</h1>
-    </thead>
-    <div class="row">
-        <div class="col-sm-3">
-            <button class="btn btn-primary btn-large btn-block" type="button" id="btn1">未回覆</button>
-            <button class="btn btn-success btn-large btn-block" type="button" id="btn2">已回覆</button>
-            <button class="btn btn-secondary btn-large btn-block" type="button" id="btn3">全部</button>
-        </div>
-        <div class="col-sm-9">
-            <label for="str_date">統計起日:</label>
-            <input type="date" id="str_date" value="@ViewBag.sdate">
-            
-            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-            <label for="end_date">統計迄日:</label>
-            <input type="date" id="end_date" value="@ViewBag.edate">
-        </div>
-    </div>
-    <br>
+
+
     <thead>
         <tr>
             <th>#</th>
@@ -46,7 +61,7 @@
             var i = 1;
         }
 
-        @foreach (var p in Model)
+        @foreach (var p in Model.dto危急值通報檔2)
         {
             <tr>
                 <td>@i</td>
@@ -54,7 +69,7 @@
                 <td>@p.流水單號</td>
                 <td>@p.病歷號碼</td>
                 <td>@p.姓名</td>
-                <td>@p.通報日期</td>
+                <td>@p.日期字串</td>
                 @if (@p.流程旗標 == "回")
                 {
                     <td><button class="btn btn-link" id="btn" + i type="button">檢視</button></td>

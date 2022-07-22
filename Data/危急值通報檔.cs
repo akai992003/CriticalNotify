@@ -4,6 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CriticalNotify.Data
 {
+    public class dtoDateTo危急值通報檔
+    {
+        public DateTime sdate { get; set; }
+        public DateTime edate { get; set; }
+        public string? str_date { get; set; }
+        public string? end_date { get; set; }
+        public string? 流程旗標 { get; set; }
+        public string? 病歷號碼 { get; set; }
+        public List<危急值通報檔2>? dto危急值通報檔2 { get; set; }
+    }
     public class 危急值通報檔2 : 危急值通報檔
     {
         public string? 姓名 { get; set; }
@@ -11,6 +21,7 @@ namespace CriticalNotify.Data
         public string? 檢查項目 { get; set; }
         public int 來源檔_counter { get; set; }
         public string? 病歷號碼 { get; set; }
+        public string? 日期字串 { get; set; }
 
     }
     public class 危急值通報檔
@@ -24,9 +35,9 @@ namespace CriticalNotify.Data
         public string? 報告台代碼 { get; set; }
         public string? 流水單號 { get; set; }
         public string? 流程旗標 { get; set; }
-        public string? 通報日期 { get; set; }
+        public DateTime 通報日期 { get; set; }
         public string? 通報時間 { get; set; }
-        public string? 回覆日期 { get; set; }
+        public DateTime 回覆日期 { get; set; }
         public string? 回覆時間 { get; set; }
         public string? 回覆內容 { get; set; }
         public string? 通報人 { get; set; }
@@ -38,7 +49,7 @@ namespace CriticalNotify.Data
         Task New危急值通報檔(危急值通報檔 dto);
         Task<危急值通報檔2> Get危急值通報檔ByCounter(int counter);
         Task<危急值通報檔2> Get危急值通報檔ByCounterJOIN(int counter);
-        Task<List<危急值通報檔2>> Get危急值通報檔(string sdate, string edate);
+        Task<List<危急值通報檔2>> Get危急值通報檔(DateTime sdate, DateTime edate, string 流程旗標 = "全", string 病歷號碼 = "");
     }
 
     public class 危急值通報檔Service : I危急值通報檔Service
@@ -53,7 +64,7 @@ namespace CriticalNotify.Data
                 {
                     context.hn危急值通報檔.Attach(q);
                     q.回覆內容 = dto.回覆內容;
-                    q.回覆日期 = DateTime.Now.ToString("yyyyMMdd");
+                    q.回覆日期 = DateTime.Now;
                     q.回覆時間 = DateTime.Now.ToString("HHmm");
                     await context.SaveChangesAsync();
                 }
@@ -223,39 +234,52 @@ namespace CriticalNotify.Data
         }
 
 
-        public async Task<List<危急值通報檔2>> Get危急值通報檔(string sdate, string edate)
+        public async Task<List<危急值通報檔2>> Get危急值通報檔(DateTime sdate, DateTime edate, string 流程旗標 = "全", string 病歷號碼 = "")
         {
             using (var context = new HNContext())
             {
                 var q = await (from p in context.hn危急值通報檔
-                                      join p2 in context.病患檔
-                                      on p.病患檔_counter equals p2.counter
-                                      join p3 in context.報告台結果檔
-                                      on p.結果檔_counter equals p3.counter
-                                      where p.通報日期 == sdate
-                                      orderby p.通報日期 descending
-                                      select new 危急值通報檔2
-                                      {
-                                          counter = p.counter,
-                                          結果檔_counter = p.結果檔_counter,
-                                          病患檔_counter = p.病患檔_counter,
-                                          檢查類別 = p.檢查類別,
-                                          來源代碼 = p.來源代碼,
-                                          報告台代碼 = p.報告台代碼,
-                                          流水單號 = p.流水單號,
-                                          流程旗標 = p.流程旗標,
-                                          通報日期 = p.通報日期,
-                                          通報時間 = p.通報時間,
-                                          回覆日期 = p.回覆日期,
-                                          回覆時間 = p.回覆時間,
-                                          回覆內容 = p.回覆內容,
-                                          通報人 = p.通報人,
-                                          回覆醫師 = p.回覆醫師,
-                                          姓名 = p2.姓名,
-                                          檢查結果 = p3.報告內容,
-                                          來源檔_counter = p3.來源檔_counter,
-                                          病歷號碼 = p2.病歷號碼
-                                      }).ToListAsync();
+                               join p2 in context.病患檔
+                               on p.病患檔_counter equals p2.counter
+                               join p3 in context.報告台結果檔
+                               on p.結果檔_counter equals p3.counter
+                               where p.通報日期 >= sdate
+                               orderby p.通報日期 descending
+                               select new 危急值通報檔2
+                               {
+                                   counter = p.counter,
+                                   結果檔_counter = p.結果檔_counter,
+                                   病患檔_counter = p.病患檔_counter,
+                                   檢查類別 = p.檢查類別,
+                                   來源代碼 = p.來源代碼,
+                                   報告台代碼 = p.報告台代碼,
+                                   流水單號 = p.流水單號,
+                                   流程旗標 = p.流程旗標,
+                                   通報日期 = p.通報日期,
+                                   通報時間 = p.通報時間,
+                                   回覆日期 = p.回覆日期,
+                                   回覆時間 = p.回覆時間,
+                                   回覆內容 = p.回覆內容,
+                                   通報人 = p.通報人,
+                                   回覆醫師 = p.回覆醫師,
+                                   姓名 = p2.姓名,
+                                   檢查結果 = p3.報告內容,
+                                   來源檔_counter = p3.來源檔_counter,
+                                   病歷號碼 = p2.病歷號碼,
+                                   日期字串 = p.通報日期.ToString("yyyy-MM-dd")
+                               }).ToListAsync();
+                if (流程旗標 != "全")
+                {
+                    //q = q.Where(p => p.流程旗標 == 流程旗標).ToList();
+
+                    q = (from p in q where p.流程旗標 == 流程旗標 select p).ToList();
+                }
+                if (病歷號碼 != "" && 病歷號碼 != null)
+                {
+                    //q = q.Where(p => p.流程旗標 == 流程旗標).ToList();
+
+                    q = (from p in q where p.病歷號碼 == 病歷號碼 select p).ToList();
+                }
                 return q;
             }
         }

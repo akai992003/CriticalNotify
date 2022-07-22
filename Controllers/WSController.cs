@@ -32,6 +32,7 @@ public class WSController : ControllerBase
     [HttpGet("criti_report")]
     public async Task<IActionResult> criti_report1(string type, int counter, string empno)
     {
+        var _emptyDate = new DateTime(1911,1,1,0,0,1);
         var q = await this.I報告台結果檔.Get報告台結果檔(type, counter);
         var d1 = new 危急值通報檔();
         d1.結果檔_counter = q.counter;
@@ -41,9 +42,9 @@ public class WSController : ControllerBase
         d1.報告台代碼 = q.報告台代碼.ToString();
         d1.流水單號 = q.申請流水號;
         d1.流程旗標 = "通";
-        d1.通報日期 = DateTime.Now.ToString("yyyyMMdd");
+        d1.通報日期 = DateTime.Now;
         d1.通報時間 = DateTime.Now.ToString("HHmm");
-        d1.回覆日期 = "";
+        d1.回覆日期 = _emptyDate;
         d1.回覆時間 = "";
         d1.回覆內容 = "";
         d1.通報人 = empno;

@@ -26,7 +26,7 @@ public class HomeController : Controller
         I危急值通報檔 = _危急值通報檔;
         I繳費 = _I繳費Service;
     }
-    
+
     public async Task<IActionResult> Index(int counter)
     {
 
@@ -288,17 +288,35 @@ public class HomeController : Controller
         return RedirectToAction("Privacy", "Home", new { rtn日期 = dto1.dto日期 });
     }
 
-
     public async Task<IActionResult> Reply(危急值通報檔2 dto)
     {
-        var sdate = DateTime.Now.ToString("yyyyMMdd");
-        var edate = DateTime.Now.ToString("yyyyMMdd");
-        ViewBag.sdate = sdate;
-        ViewBag.edate = edate;
-        var r1 = await I危急值通報檔.Get危急值通報檔(sdate, edate);
-        return View(r1);
-    }
+        var sdate = DateTime.Now.AddDays(-90);
+        var edate = DateTime.Now;
+        var r1 = await I危急值通報檔.Get危急值通報檔(sdate, edate, "回", "");
+        var retundto = new dtoDateTo危急值通報檔();
+        retundto.病歷號碼 = "";
+        retundto.sdate = DateTime.Now;
+        retundto.str_date = sdate.ToString("yyyy-MM-dd");
+        retundto.end_date = edate.ToString("yyyy-MM-dd");
+        retundto.dto危急值通報檔2 = r1;
+        return View(retundto);
 
+    }
+    [HttpPost]
+    public async Task<IActionResult> Reply(dtoDateTo危急值通報檔 dto)
+    {
+        var sdate = dto.sdate;
+        var edate = dto.edate;
+        string 病歷號碼 = dto.病歷號碼;
+        var r1 = await I危急值通報檔.Get危急值通報檔(sdate, edate, dto.流程旗標, 病歷號碼);
+        var retundto = new dtoDateTo危急值通報檔();
+
+        retundto.str_date = sdate.ToString("yyyy-MM-dd");
+        retundto.end_date = edate.ToString("yyyy-MM-dd");
+        retundto.病歷號碼 = 病歷號碼;
+        retundto.dto危急值通報檔2 = r1;
+        return View(retundto);
+    }
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
